@@ -10,11 +10,10 @@
   </nav>
   <router-view></router-view>
 </div>
-​
+
 <!-- Vue.js本体とVue Routerの読み込み-->
 <script src="https://unpkg.com/vue@2.5.17"></script>
 <script src="https://unpkg.com/vue-router@3.0.1"></script>
-​
 <!-- ここからを以後書いていく -->
 <!-- 必要な分のコンポーネントを定義 -->
 <script type="text/x-template" id="user-list">
@@ -26,12 +25,13 @@
     <!-- usersがロードされたら各ユーザーの名前を表示する -->
     <div v-for="user in users" :keys="user.id">
       <h2>{{ user.name }}</h2>
+      <p>{{ user.description }}</p>
     </div>
   </div>
 </script>
-​
+
 <!-- いくつかのテンプレート定義が続く -->
-​
+
 <!-- 任意のJS実装 -->
 <script>
   // JSONを返す関数
@@ -41,16 +41,64 @@
       callback(null, [
         {
           id: 1,
-          name: "katakura natsumi"
+          name: "katakura natsumi",
+          description: '株式会社万葉で働くエンジニアです'
         },
         {
           ud: 2,
-          name: "katakura mari"
+          name: "katakura mari",
+          description: '消費生活アドバイザーです'
         }
       ])
     }, 1000)
   }
-​
+
+  // 擬似的にAPI経由で情報を取得したようにする
+  var getUser = function (userId, callback) {
+    setTimeout(function () {
+      var filteredUsers = userData.filter(function (user) {
+        return user.id === parseInt(userId, 10)
+      })
+      callback(null, filteredUsers && filteredUsers[0])
+    }, 1000)  
+  }
+
+  // 詳細ページのコンポーネント
+  var UserDetail = {
+    template: '#user-datail',
+    // 初期値のセット
+    data: function () {
+      return {
+        loading: false,
+        user: null,
+        error: null  
+      } 
+    },
+
+    created: function () {
+      this.fetchData()  
+    },
+
+    watch: {
+      '$route': 'fetchData'  
+    },
+
+    methods: {
+      fetchData: function () {
+        this.loading = true
+        // this.$route.params.userIdに現在のURL上のパラメーターに対応したuserIdが格納される
+        getUser(this.$route.params.userId, (function (err, user) {
+          this.loading = false
+          if (err) {
+            this.error = err.toString()  
+          } else {
+            this.user = user  
+          }
+        }).bind(this))
+      }
+    }
+  }
+
   var UserList = {
     // HTML上のscriptタグのidを指定する
     template: '#user-list',
@@ -61,16 +109,17 @@
         error: null
       }
     },
+
     // 初期化時にデータを取得する
     created: function () {
       this.fetchData()
     },
-​
+    
     // $routeの変更をwatchすることでルーティングが変更された時に再度データを取得
     watch: {
       '$route': 'fetchData'
     },
-​
+
     methods: {
       fetchData: function () {
         this.loading = true
@@ -87,7 +136,7 @@
       }
     }
   }
-​
+
   var router = new VueRouter({
     routes: [
       {
@@ -99,10 +148,14 @@
       {
         path: '/users',
         component: UserList
+      },
+      {
+        path: '/users/:userId',
+        component: UserDetail  
       }
     ]
   })
-​
+  
   var app = new Vue({
     router: router
   }).$mount('#app')
