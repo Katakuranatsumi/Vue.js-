@@ -24,6 +24,19 @@
     </div>
     <!-- usersがロードされたら各ユーザーの名前を表示する -->
     <div v-for="user in users" :keys="user.id">
+      <router-link :to="{ path: '/users/' + user.id }">{{ user.name }}</router-link>
+    </div>
+  </div>
+</script>
+
+<!-- ユーザ詳細ページのテンプレート -->
+<script type="text/x-template" id="user-detail">
+  <div>
+    <div class="loading" v-if="loading">読み込み中...</div>
+    <div v-if="error" class="error">
+      {{ error }}
+    </div>
+    <div v-if="user">
       <h2>{{ user.name }}</h2>
       <p>{{ user.description }}</p>
     </div>
@@ -34,22 +47,25 @@
 
 <!-- 任意のJS実装 -->
 <script>
+  // ダミーデータの定義。本来はデータベースの情報をAPI経由で取得する
+  var userData = [
+    {
+      id: 1,
+      name: "katakura natsumi",
+      description: '株式会社万葉で働くエンジニアです'
+    },
+    {
+      id: 2,
+      name: "katakura mari",
+      description: '消費生活アドバイザーです'
+    }
+  ]
+
   // JSONを返す関数
   // この関数を用いて擬似的にもWeb API経由で情報を取得したようにする
   var getUsers = function (callback) {
     setTimeout(function () {
-      callback(null, [
-        {
-          id: 1,
-          name: "katakura natsumi",
-          description: '株式会社万葉で働くエンジニアです'
-        },
-        {
-          ud: 2,
-          name: "katakura mari",
-          description: '消費生活アドバイザーです'
-        }
-      ])
+      callback(null, userData)
     }, 1000)
   }
 
@@ -65,7 +81,7 @@
 
   // 詳細ページのコンポーネント
   var UserDetail = {
-    template: '#user-datail',
+    template: '#user-detail',
     // 初期値のセット
     data: function () {
       return {
@@ -92,7 +108,7 @@
           if (err) {
             this.error = err.toString()  
           } else {
-            this.user = user  
+            this.user = user
           }
         }).bind(this))
       }
