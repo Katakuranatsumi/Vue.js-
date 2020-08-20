@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<script src="https://unpkg.com/vue@latest"></script>
+<script src="https://unpkg.com/vuex@latest"></script>
+
+<script>
+Vue.use(Vuex)
+
+const store = new Vuex.Store({
+  state: {
+    count: 10  
+  },
+
+  // mutationsオプションでミューテーションを定義する
+  mutations: {
+    // 'increment'ミューテーションを定義
+    increment (state, payload) {
+      state.count = state.count + payload.amount
+    } 
+  }
+})
+
+// store.commitでミューテーションを呼び出す
+console.log(store.state.count)
+store.commit('increment', { amount: 5 })
+console.log(store.state.count)
+</script>
