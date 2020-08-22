@@ -1,6 +1,6 @@
-import App from './App.vue'
+import App from './TaskApp.vue'
 import Vue from 'vue'
-import store from '../store/task_store'
+import store from './task_store'
 
 new Vue({
   el: '#app',
@@ -8,5 +8,5 @@ new Vue({
   // コンポーネントからストアを利用できるようにする
   store,
 
-  render: h => h(App),
+  render: h => h(App)
 })
