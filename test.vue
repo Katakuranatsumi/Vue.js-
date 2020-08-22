@@ -9,8 +9,7 @@
 <script>
 export default {
   data () {
-    return { message: 'こんにちは！' }  
+    return { message: 'こんにちは！' }
   }
-} 
+}
 </script>
-
