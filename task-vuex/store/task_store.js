@@ -12,11 +12,13 @@ const store = new Vuex.Store({
       {
         id: 1,
         name: '牛乳を買う',
+        labelIds: [1, 2],
         done: false
       },
       {
         id: 2,
         name: 'Vue.jsの本を買う',
+        labelIds: [1, 3],
         done: true
       }
     ],
@@ -76,7 +78,7 @@ const store = new Vuex.Store({
       })
 
       // 次に追加されるラベルを付与するIDを更新する
-      state.nextLabelId
+      state.nextLabelId++
     },
   },
 })
