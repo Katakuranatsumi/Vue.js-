@@ -77,6 +77,11 @@ const store = new Vuex.Store({
       state.nextTaskId++
     },
 
+    // タスクを削除する
+    deleteTask (state, id) {
+      state.tasks.splice(id - 1, 1)
+    },
+
     // タスクの完了状態を変更する
     toggleTaskStatus (state, { id }) {
       const filtered = state.tasks.filter(task => {
@@ -123,6 +128,10 @@ const store = new Vuex.Store({
         nextLabelId: state.nextLabelId
       }
       localStorage.setItem('task-app-data', JSON.stringify(data))
+    },
+
+    deleteTask({ commit }, id) {
+      commit("deleteTask", id)
     },
 
     // ローカルストレージからステートを復元する

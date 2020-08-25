@@ -10,6 +10,7 @@
           <span v-for="id in task.labelIds" v-bind:key="id">
             {{ getLabelText(id) }}
           </span>
+          <button @click.stop="deleteTask(task.id)">削除</button>
       </li>
     </ul>
 
@@ -131,6 +132,10 @@ export default {
     restore () {
       // 'restore'アクションをコミット
       this.$store.dispatch('restore')
+    },
+
+    deleteTask (id) {
+      this.$store.dispatch('deleteTask', id)
     }
   }
 }
