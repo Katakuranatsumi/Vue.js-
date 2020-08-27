@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<script src="https://unpkg.com/vue@2.5.17"></script>
+
+<div id="moomin-component">
+  <ol>
+    <moomin-family-name v-for="moomin in moominFamily " :key="moomin.name" :moomin-family="moomin">
+      <p>ムーミン</p>
+    </moomin-family-name>
+  </ol>
+</div>
+
+<script>
+new Vue({
+  el: '#moomin-component',
+  data: {
+    moominFamily: [
+      {name: 'ムーミンパパ'}
+    ]
+  },
+  components: {
+    'moomin-family-name': {
+    props: {
+      moominFamily: {
+        type: Object,
+        required: true
+      }
+    },
+    template: '<p>{{moominFamily.name}}</p>',
+    },
+  }
+})
+</script>
