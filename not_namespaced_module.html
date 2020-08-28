@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<script src="https://unpkg.com/vue@latest"></script>
+<script src="https://unpkg.com/vuex@latest"></script>
+
+<script>
+Vue.use(Vuex)
+
+const store = new Vuex.Store({
+  modules: {
+    // fooモジュール
+    foo: {
+      state: {
+        value: 123
+      },
+
+      action: {
+        log (ctx) {
+          console.log('モジュールfooのステート', ctx.state)
+        }
+      }
+    },
+
+    // barモジュール
+    bar: {
+      state: {
+        message: 'Hello!'
+      },
+
+      action: {
+        log (ctx) {
+          console.log('モジュールbarのステート', ctx.state)
+        }
+      }
+    }
+  }
+})
+
+// logアクションを呼び出す
+// fooモジュール内のステートと、barモジュール内のステートが出力される
+store.dispatch('log')
+</script>
